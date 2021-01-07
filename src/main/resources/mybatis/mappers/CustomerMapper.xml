@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fyc.ssm.mapper.CustomerMapper">
+    <resultMap id="customerResult" type="com.fyc.ssm.pojo.Customer">
+        <id column="id" javaType="Integer" property="id"></id>
+        <id column="name" javaType="String" property="name"></id>
+        <id column="source" javaType="String" property="source"></id>
+        <id column="industry" javaType="String" property="industry"></id>
+        <id column="level" javaType="String" property="level"></id>
+        <id column="linkman" javaType="String" property="linkman"></id>
+        <id column="phone" javaType="String" property="phone"></id>
+        <id column="mobile" javaType="String" property="mobile"></id>
+        <id column="zipcode" javaType="String" property="zipcode"></id>
+        <id column="address" javaType="String" property="address"></id>
+        <id column="createtime" javaType="java.util.Date" property="createtime"></id>
+    </resultMap>
+    <select id="queryById" parameterType="Integer" resultMap="customerResult">
+        select id,name,source,industry,level,linkman,phone,mobile,zipcode,address,createtime from customer where id=#{id}
+    </select>
+    <insert id="insertCustomer" parameterType="Customer" keyProperty="id" keyColumn="id" useGeneratedKeys="true">
+        insert into customer(id,name,source,industry,level,linkman,phone,mobile,zipcode,address,createtime) values(#{id},#{name},#{source},#{industry},#{level},#{linkman},#{phone},#{mobile},#{zipcode},#{address},#{createtime})
+    </insert>
+</mapper>

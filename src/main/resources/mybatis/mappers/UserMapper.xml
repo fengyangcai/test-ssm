@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fyc.ssm.mapper.UserMapper">
+
+    <resultMap id="UserResult" type="User">
+        <id property="id" javaType="Long" column="id"></id>
+        <id property="code" javaType="String" column="code"></id>
+        <id property="name" javaType="String" column="name"></id>
+        <id property="nickname" javaType="String" column="nickname"></id>
+        <id property="password" javaType="String" column="password"></id>
+        <id property="pic" javaType="String" column="pic"></id>
+        <id property="state" javaType="String" column="state"></id>
+    </resultMap>
+    <sql id="userSql">
+        id,code,name ,nickname,password,pic,state
+    </sql>
+
+    <select id="selectAll" resultMap="UserResult">
+        select * from user
+    </select>
+
+    <select id="selectNow" resultType="string">
+        SELECT NOW()
+    </select>
+
+    <select id="queryUserByName" resultType="User">
+        select
+        <include refid="userSql"/>
+        from user where name=#{name};
+    </select>
+    <insert id="addUser" useGeneratedKeys="true" keyColumn="id" keyProperty="id" parameterType="user">
+        insert into  user(name,code,nickname,password,pic,state) values(#{name},#{code},#{nickname},#{password},#{pic},#{state})
+    </insert>
+
+    <update id="updateByUserId">
+        update user set  name=#{name},code=#{code},password=#{password},pic=#{pic},state=#{state};
+    </update>
+    <update id="updateSelect" parameterType="user"  useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        update user set
+        <if test="name !=null and name !=''">
+            name=#{name},
+        </if>
+        <if test="code !=null and code !=''">
+            code=#{code},
+        </if>
+        <if test="nickname !=null and nickname !=''">
+            nickname=#{nickname},
+        </if>
+        <if test="password !=null and password !=''">
+            password=#{password},
+        </if>
+        <if test="pic !=null and pic !=''">
+            pic=#{pic},
+        </if>
+        <if test="state !=null and state!=''">
+            state=#{state}
+        </if>
+         <where>
+             id=#{id}
+         </where>
+    </update>
+
+    <delete id="deleteByUserId" parameterType="Long">
+        delete from user where id=#{id}
+    </delete>
+</mapper>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-4.3.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd">
+    <!-- 使用注解的包，包括子集 -->
+    <context:component-scan base-package="com.fyc.ssm.controller"/>
+    <!-- 静态资源访问 -->
+   <!-- <mvc:default-servlet-handler />-->
+    <mvc:annotation-driven/>
+    <!--类型转化器conversion-service="conversionService:使用我们自己配置的类型转化组件 -->
+    <mvc:annotation-driven conversion-service="conversionService"></mvc:annotation-driven>
+    <!--告诉springmvc别用默认的ConversionService而是我们自定义的ConversionService、可能有我们自定义的Converter-->
+    <bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
+        <property name="converters" ref="myDateConverter"></property>
+    </bean>
+    <bean id="myDateConverter" class="com.fyc.ssm.utils.MyDateConverter"></bean>
+
+    <bean id="ViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/"/>
+        <property name="suffix" value=".jsp"/>
+        <property name="contentType" value="text/html;charset=UTF-8"/>
+        <property name="order" value="1"/>
+    </bean>
+    <!-- 配置文件上传解析器 ,说明： 1.文件上传解析器id值，必须是文件上传解析器接口名称的首字母小写（MultipartResolver） -->
+    <bean id="multipartResolver"
+          class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!--maxUploadSize属性：文件上传大小限制，以字节为单位： 10M=10*1024*1024 -->
+        <property name="maxUploadSize" value="10485760"></property>
+        <!-- maxInMemorySize属性：配置内存缓冲区大小 ，以字节为单位： 4k:4*1024 -->
+        <property name="maxInMemorySize" value="4096"></property>
+        <!-- defaultEncoding属性：配置字符集编码 -->
+        <property name="defaultEncoding" value="UTF-8"></property>
+    </bean>
+</beans>
